@@ -23,14 +23,15 @@ provider "aws" {
 # Module
 # ------------------------------
 module "ec2" {
-  source        = "./modules/ec2"
-  ami_id        = var.ami_id
-  instance_type = var.instance_type
-  volume_size   = var.volume_size
-  app_name      = var.app_name
-  app_version   = var.app_version
-  environment   = var.environment
-  subnet_id     = module.vpc.public-subnet-a_id
+  source            = "./modules/ec2"
+  ami_id            = var.ami_id
+  instance_type     = var.instance_type
+  volume_size       = var.volume_size
+  app_name          = var.app_name
+  app_version       = var.app_version
+  environment       = var.environment
+  subnet_id         = module.vpc.public-subnet-a_id
+  security_group_id = module.security_group.security_group_id
 }
 
 module "vpc" {
@@ -40,6 +41,14 @@ module "vpc" {
   vpc_cidr_block         = var.vpc_cidr_block
   subnet_cidr_block_az_a = var.subnet_cidr_block_az_a
   subnet_cidr_block_az_c = var.subnet_cidr_block_az_c
+}
+
+module "security_group" {
+  source      = "./modules/security_group"
+  app_name    = var.app_name
+  environment = var.environment
+  vpc_id      = module.vpc.vpc_id
+  allowed_ip  = var.allowed_ip
 }
 
 # ------------------------------
@@ -91,6 +100,10 @@ variable "subnet_cidr_block_az_a" {
 }
 
 variable "subnet_cidr_block_az_c" {
+  type = string
+}
+
+variable "allowed_ip" {
   type = string
 }
 
