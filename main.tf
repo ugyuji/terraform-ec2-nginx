@@ -32,6 +32,7 @@ module "ec2" {
   environment       = var.environment
   subnet_id         = module.vpc.public-subnet-a_id
   security_group_id = module.security_group.security_group_id
+  key_name          = var.key_name
 }
 
 module "vpc" {
