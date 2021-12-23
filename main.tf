@@ -107,6 +107,10 @@ variable "allowed_ip" {
   type = string
 }
 
+variable "key_name" {
+  type = string
+}
+
 # ------------------------------
 # Outputs
 # ------------------------------
